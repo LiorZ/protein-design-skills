@@ -1,0 +1,28 @@
+# Nanobody CDR design with a scaffold library.
+# (Modeled on example/nanobody/penguinpox.yaml)
+#
+# The `file: path:` accepts a LIST of nested yamls — each is a "file"-shaped
+# scaffold spec (see examples/nanobody_scaffold.yaml).
+#
+# Run:
+#   boltzgen check examples/nanobody.yaml
+#   boltzgen run   examples/nanobody.yaml \
+#     --output workbench/test --protocol nanobody-anything --num_designs 200
+
+entities:
+  # Target.
+  - file:
+      path: target.cif         # <-- replace with your antigen CIF
+      include:
+        - chain:
+            id: B
+
+  # Scaffold library — each YAML inside this list is treated as a file entity
+  # describing one nanobody scaffold (with CDR exclusions + insertion points).
+  # In a real campaign you'd point at 5-20 diverse scaffolds.
+  - file:
+      path:
+        - nanobody_scaffold.yaml
+        # Add more lines for additional scaffolds:
+        # - nanobody_scaffold_2.yaml
+        # - nanobody_scaffold_3.yaml

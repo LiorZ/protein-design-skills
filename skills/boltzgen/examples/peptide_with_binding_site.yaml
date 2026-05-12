@@ -1,0 +1,30 @@
+# Linear peptide-binder design vs. a specific binding site.
+# (Modeled on example/peptide_against_specific_site_on_ragc/rragc.yaml)
+#
+# Run:
+#   boltzgen check examples/peptide_with_binding_site.yaml
+#   boltzgen run   examples/peptide_with_binding_site.yaml \
+#     --output workbench/test --protocol peptide-anything --num_designs 50
+#
+# Note: protocol peptide-anything sets --inverse_fold_avoid C by default
+# and tightens refolding_rmsd_threshold to 2.0.
+
+entities:
+  # Designed peptide, length sampled in [5, 20].
+  - protein:
+      id: P
+      sequence: 5..20
+
+  # Target — a long list of binding-site residues on chain G.
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: G
+      binding_types:
+        - chain:
+            id: G
+            # Many disjoint contact residues are fine; comma- and range- mixed.
+            binding: 190,193,194,205,214..222,232,236,239..240,
+                     245..246,249..250,253..254,256..259,261..263,
+                     278..286

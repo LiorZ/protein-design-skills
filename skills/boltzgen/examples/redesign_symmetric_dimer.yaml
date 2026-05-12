@@ -1,0 +1,32 @@
+# Redesign sequences on an existing symmetric homo-dimer.
+# Both chains share `symmetric_group: 1`, which ties their sampled sequence
+# during inverse folding.
+#
+# Run with the dedicated protocol so the filtering metrics make sense:
+#   boltzgen check examples/redesign_symmetric_dimer.yaml
+#   boltzgen run   examples/redesign_symmetric_dimer.yaml \
+#     --output workbench/test --protocol protein-redesign --num_designs 100
+
+entities:
+  - file:
+      path: symmetric_dimer.cif    # <-- replace with your dimer CIF
+      include:
+        - chain:
+            id: A
+            res_index: 100..300
+            symmetric_group: 1     # tie chain A and chain B
+        - chain:
+            id: B
+            res_index: 100..300
+            symmetric_group: 1
+
+      # Mark the residues to redesign on BOTH chains. With protein-redesign
+      # protocol, design_folding is skipped and a design_mask is used for
+      # target/template handling.
+      design:
+        - chain:
+            id: A
+            res_index: 200..210
+        - chain:
+            id: B
+            res_index: 200..210

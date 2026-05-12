@@ -1,0 +1,57 @@
+# Covalent chemistry — bonds defined between protein atoms and BOTH
+# CCD and SMILES ligand atoms.
+# (Modeled on example/small_molecule_from_file_and_smiles/4g37.yaml)
+#
+# CCD ligand atom names: look up on RCSB CCD (case-sensitive).
+# SMILES ligand atom names: element + 1-based SMILES index (e.g. C6, O1).
+#
+# Run:
+#   boltzgen check examples/covalent_small_molecule.yaml
+#   boltzgen run   examples/covalent_small_molecule.yaml \
+#     --output workbench/test --protocol protein-anything --num_designs 50
+
+entities:
+  # Designed peptide: 1-3 design, Cys, 1-2 design, Cys, 1-3 design.
+  # Minimum-sample Cys positions: 2, 4.
+  - protein:
+      id: B
+      sequence: 1..3C1..2C1..3
+
+  # Target structure file. Chain A is the protein, chain C is the existing
+  # CCD ligand XLX whose covalent attachment we will preserve.
+  - file:
+      path: target.pdb        # <-- replace with your PDB / CIF
+      include:
+        - chain:
+            id: A
+        - chain:
+            id: C    # the XLX cofactor
+
+  # A second small molecule (SMILES). We attach it covalently both to the
+  # target (chain A) and to a designed cysteine on chain B.
+  - ligand:
+      id: D
+      smiles: "CC(=O)NCCNC(C)=O"
+
+constraints:
+  # Constraint 1: chain A Cys at res 105 stays bound to XLX:C3 (preserved).
+  - bond:
+      atom1: [A, 105, SG]
+      atom2: [C, 1, C3]
+
+  # Constraint 2: a designed Cys (chain B, pos 2) attaches to XLX:C11.
+  - bond:
+      atom1: [B, 2, SG]
+      atom2: [C, 1, C11]
+
+  # Constraint 3: a target Ser (chain A, res 339) OG bonded to the SMILES
+  # ligand D at its first carbon.
+  - bond:
+      atom1: [A, 339, OG]
+      atom2: [D, 1, C1]
+
+  # Constraint 4: the SMILES ligand D bonded at its 6th carbon to the second
+  # designed Cys (chain B, pos 4).
+  - bond:
+      atom1: [B, 4, SG]
+      atom2: [D, 1, C6]

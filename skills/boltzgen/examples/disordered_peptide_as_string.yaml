@@ -1,0 +1,20 @@
+# Bind a fully disordered peptide passed as a fixed SEQUENCE (no CIF).
+# The target has no structure at all — only its sequence.
+# (Modeled on example/binding_disordered_peptides/tpp4.yaml)
+#
+# Run:
+#   boltzgen check examples/disordered_peptide_as_string.yaml
+#   boltzgen run   examples/disordered_peptide_as_string.yaml \
+#     --output workbench/test --protocol protein-anything --num_designs 100
+
+entities:
+  # Designed binder, 120-140 residues.
+  - protein:
+      id: A
+      sequence: 120..140
+
+  # Target — a fixed 20-mer peptide, no structure data available.
+  # The model treats this as a sequence-only chain with no coordinates.
+  - protein:
+      id: B
+      sequence: GGGILPWKWPWWPWRRGGG

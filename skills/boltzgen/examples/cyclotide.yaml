@@ -1,0 +1,36 @@
+# Cyclotide design — cyclic peptide with three disulfide bridges.
+# (Modeled on example/cyclotide/3ivq.yaml)
+#
+# Run:
+#   boltzgen check examples/cyclotide.yaml
+#   boltzgen run   examples/cyclotide.yaml \
+#     --output workbench/test --protocol peptide-anything --num_designs 100 \
+#     --inverse_fold_avoid ""
+
+entities:
+  # Sequence with six fixed cysteines, head-to-tail cyclized.
+  # Positions of the cysteines (minimum-sample): 4, 13, 20, 26, 30, 32.
+  - protein:
+      id: B
+      sequence: 3C8C6C5C3C1C2
+      cyclic: true
+
+  # Target.
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: A
+      structure_groups: "all"
+
+constraints:
+  # Three disulfide bridges between the six cysteines (cyclic-knot topology).
+  - bond:
+      atom1: [B, 4, SG]
+      atom2: [B, 26, SG]
+  - bond:
+      atom1: [B, 13, SG]
+      atom2: [B, 30, SG]
+  - bond:
+      atom1: [B, 20, SG]
+      atom2: [B, 32, SG]

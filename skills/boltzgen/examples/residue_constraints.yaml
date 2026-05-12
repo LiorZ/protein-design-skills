@@ -1,0 +1,32 @@
+# Per-position whitelist / blacklist of amino acids using residue_constraints.
+# Applied at inverse-folding time (no effect with --skip_inverse_folding).
+# (Modeled on example/residue_constraints_test.yaml)
+#
+# Statistical note: with only --num_designs 5, a single blacklist constraint
+# has ~21% chance of false-pass. Use at least 50 for verification.
+#
+# Run:
+#   boltzgen check examples/residue_constraints.yaml
+#   boltzgen run   examples/residue_constraints.yaml \
+#     --output workbench/rc --protocol protein-anything --num_designs 50
+
+entities:
+  - protein:
+      id: A
+      sequence: 10
+      residue_constraints:
+        # Position 1: force Alanine (whitelist of length 1).
+        - position: 1
+          allowed: A
+
+        # Positions 3-5: forbid Cys and Met.
+        - position: 3..5
+          disallowed: CM
+
+        # Position 8: allow only small amino acids.
+        - position: 8
+          allowed: AGS         # or list form: [A, G, S]
+
+        # Position 10: force Proline (e.g., for a beta-turn).
+        - position: 10
+          allowed: P

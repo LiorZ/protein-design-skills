@@ -1,0 +1,48 @@
+# Stapled helical peptide ("helicon") using the WHL small-molecule staple.
+# (Modeled on example/streptavidin_partially_flexible_target/helix_plus_staple.yaml)
+#
+# Two Cys residues in the designed peptide are linked by a WHL molecule via
+# bonds Cys-SG -> WHL-CK and Cys-SG -> WHL-CH.
+#
+# Run:
+#   boltzgen check examples/helicon_with_staple.yaml
+#   boltzgen run   examples/helicon_with_staple.yaml \
+#     --output workbench/test --protocol peptide-anything --num_designs 100 \
+#     --inverse_fold_avoid ""    # allow Cys
+
+entities:
+  # Designed peptide: 3-7 design, Cys, 6 design, Cys, 3-7 design.
+  # Minimum-sample positions of the Cys: 4 and 11.
+  - protein:
+      id: G
+      sequence: 3..7C6C3..7
+
+  # The WHL staple (ChemComp WHL).
+  - ligand:
+      id: F
+      ccd: WHL
+
+  # The target, with a flexible loop on residues 32-42 hidden (visibility 0).
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: A
+      structure_groups:
+        - group:
+            id: A
+            visibility: 1
+        - group:
+            id: A
+            visibility: 0
+            res_index: 32..42
+
+constraints:
+  # Two covalent bonds tether the cysteines to two distinct atoms on WHL.
+  # Atom names are CCD-standard; look them up in the WHL CCD entry on RCSB.
+  - bond:
+      atom1: [G, 4, SG]
+      atom2: [F, 1, CK]
+  - bond:
+      atom1: [G, 11, SG]
+      atom2: [F, 1, CH]

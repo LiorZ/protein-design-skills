@@ -1,0 +1,69 @@
+# A single nanobody scaffold YAML — referenced by nanobody.yaml.
+#
+# This file is itself "file-shaped" (no entities: wrapper) and describes:
+#   * Which scaffold chain to import (`include`).
+#   * Which CDR positions to redesign (`design`).
+#   * Which CDR positions to *replace* with variable-length insertions
+#     (`exclude` + `design_insertions`).
+#   * How to hide the CDR coordinates so they are re-generated (visibility 0).
+#   * How to renumber after edits (`reset_res_index`).
+#
+# Modeled on example/nanobody_scaffolds/7eow.yaml (caplacizumab).
+
+path: scaffold.cif             # <-- replace with your scaffold CIF
+
+include:
+  - chain:
+      id: B                     # the VHH chain
+
+# The three CDR regions (CDR-H1: 26-34, CDR-H2: 52-59, CDR-H3: 98-118).
+design:
+  - chain:
+      id: B
+      res_index: 26..34,52..59,98..118
+
+# Show the whole scaffold (visibility 2 = no positional constraint between
+# scaffold and other entities), then HIDE the CDR coordinates so the model
+# generates new ones.
+structure_groups:
+  - group:
+      id: B
+      visibility: 2
+  - group:
+      id: B
+      visibility: 0
+      res_index: 26..34,52..59,98..118
+
+# Drop part of each CDR so we can insert a variable-length loop in its place.
+# (You leave some residues in `design` *and* exclude others — the redesigned
+# residues are the ones still in `design` after `exclude`.)
+exclude:
+  - chain:
+      id: B
+      res_index: 26..28    # take 3 out of CDR-H1
+  - chain:
+      id: B
+      res_index: 52..54    # take 3 out of CDR-H2
+  - chain:
+      id: B
+      res_index: 98..104   # take 7 out of CDR-H3
+
+# Insert 1-5 designed residues at the start of each CDR (1-14 for CDR-H3).
+design_insertions:
+  - insertion:
+      id: B
+      res_index: 26
+      num_residues: 1..5
+  - insertion:
+      id: B
+      res_index: 52
+      num_residues: 1..5
+  - insertion:
+      id: B
+      res_index: 98
+      num_residues: 1..14
+
+# Renumber the chain consecutively after include/exclude.
+reset_res_index:
+  - chain:
+      id: B

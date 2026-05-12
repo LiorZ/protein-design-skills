@@ -1,0 +1,61 @@
+# De novo zinc finger redesign against B-DNA.
+# (Modeled on example/denovo_zinc_finger_against_dna/zinc_finger.yaml)
+#
+# This is a `protein-anything` campaign that:
+#   1. Includes the *whole* CIF (including DNA, zinc ions, ...).
+#   2. Excludes specific zinc-finger residues that we'll replace.
+#   3. Inserts variable-length designed loops at one position.
+#   4. Hides everything's structure (we want a NEW zinc finger).
+#   5. Pins specific zinc-coordinating residues so they are NOT redesigned.
+#   6. Resets residue numbering after edits.
+#
+# Run:
+#   boltzgen check examples/zinc_finger_against_dna.yaml
+#   boltzgen run   examples/zinc_finger_against_dna.yaml \
+#     --output workbench/test --protocol protein-anything --num_designs 100
+
+entities:
+  - file:
+      path: zf.cif             # <-- replace with your zinc-finger / DNA complex CIF
+      include: "all"           # all chains: DNA, zinc, protein
+
+      # Remove the residues we will replace with designed loops.
+      exclude:
+        - chain:
+            id: A1
+            res_index: ..10,63..69,185..
+
+      # Where to insert new designable residues into the existing chain.
+      # Here: 3-8 residues after residue 63 in chain A1.
+      design_insertions:
+        - insertion:
+            id: A1
+            res_index: 63
+            num_residues: 3..8
+
+      # Hide ALL target/scaffold structure — we want the model to redesign
+      # the whole finger context.
+      structure_groups:
+        - group:
+            visibility: 0
+            id: "all"
+
+      # Mark a long range of chain A1 as redesignable.
+      design:
+        - chain:
+            id: A1
+            res_index: 11..184
+
+      # Carve out fixed positions on chain A1 — these are the zinc-coordinating
+      # cysteines / histidines and conserved structural residues that must NOT
+      # be redesigned. (not_design subtracts from design.)
+      not_design:
+        - chain:
+            id: A1
+            res_index: 11..20,29,33,39..48,57,61,72..81,90,94,100..109,
+                       118,122,129..138,147,151,157..166,175,179
+
+      # Renumber chain A1 from 1 after include/exclude/insert.
+      reset_res_index:
+        - chain:
+            id: A1

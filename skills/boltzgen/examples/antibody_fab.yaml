@@ -1,0 +1,28 @@
+# Antibody (Fab) CDR design with a scaffold library.
+# (Modeled on example/fab_targets/pdl1.yaml)
+#
+# Each scaffold inner-YAML describes BOTH a heavy chain and a light chain
+# (see examples/antibody_fab_scaffold.yaml). For a campaign, list many.
+#
+# Run:
+#   boltzgen check examples/antibody_fab.yaml
+#   boltzgen run   examples/antibody_fab.yaml \
+#     --output workbench/test --protocol antibody-anything --num_designs 200
+
+entities:
+  # Target.
+  - file:
+      path: target.cif         # <-- replace with your antigen CIF
+      include:
+        - chain:
+            id: A
+
+  # Scaffold library — list of nested Fab-scaffold YAMLs.
+  - file:
+      path:
+        - antibody_fab_scaffold.yaml
+        # In a real campaign, list 10-15 diverse scaffolds:
+        # - antibody_fab_scaffold_adalimumab.yaml
+        # - antibody_fab_scaffold_belimumab.yaml
+        # - antibody_fab_scaffold_dupilumab.yaml
+        # ...

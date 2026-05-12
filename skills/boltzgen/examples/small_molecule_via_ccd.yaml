@@ -1,0 +1,18 @@
+# Protein binder against a small molecule specified by 3-letter CCD code.
+# (Modeled on example/protein_binding_small_molecule/chorismite.yaml)
+#
+# Run:
+#   boltzgen check examples/small_molecule_via_ccd.yaml
+#   boltzgen run   examples/small_molecule_via_ccd.yaml \
+#     --output workbench/test --protocol protein-small_molecule --num_designs 200
+
+entities:
+  - protein:
+      id: A
+      sequence: 140..180
+
+  # Ligand by CCD code. Look up the entry on RCSB to confirm geometry / atom
+  # names (TSA = transition-state analog of chorismate, here as an example).
+  - ligand:
+      id: B
+      ccd: TSA

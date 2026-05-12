@@ -1,0 +1,28 @@
+# Protein-binder design with specific binding-site residues.
+# (Modeled on example/vanilla_peptide_with_target_binding_site/beetletert.yaml)
+#
+# Run:
+#   boltzgen check examples/protein_with_binding_site.yaml
+#   boltzgen run   examples/protein_with_binding_site.yaml \
+#     --output workbench/test --protocol protein-anything --num_designs 50
+
+entities:
+  # Designed protein with random length 60-100 aa.
+  - protein:
+      id: G
+      sequence: 60..100
+
+  # Target — only chain A used, binding site is res 343, 344, 251.
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: A
+      # The model will try to make designed residues contact these specific
+      # target residues. Use label_seq_id numbering!
+      binding_types:
+        - chain:
+            id: A
+            binding: 251,343,344
+      # Lock the target structure (default behavior, shown here for clarity).
+      structure_groups: "all"

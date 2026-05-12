@@ -1,0 +1,37 @@
+# Bind a disordered REGION of a target — keep the ordered domain in place,
+# but hide the structure of the disordered tail and condition the binder
+# only on the sequence there.
+# (Modeled on example/peptide_against_disordered_region_of_protein/cryptochrome4.yaml)
+#
+# Run:
+#   boltzgen check examples/disordered_target.yaml
+#   boltzgen run   examples/disordered_target.yaml \
+#     --output workbench/test --protocol protein-anything --num_designs 100
+
+entities:
+  # Designed binder, 12-20 residues.
+  - protein:
+      id: B
+      sequence: 12..20
+
+  - file:
+      path: target.cif         # <-- replace with your CIF
+      include:
+        - chain:
+            id: A
+      # Show all of chain A by default, but hide the structure of residues
+      # 494 and beyond (the disordered tail). The model still has the
+      # sequence there, just not coordinates.
+      structure_groups:
+        - group:
+            visibility: 1
+            id: A
+        - group:
+            visibility: 0
+            id: A
+            res_index: 494..
+      # Bind specifically to the disordered tail residues 494..507.
+      binding_types:
+        - chain:
+            id: A
+            binding: 494..507

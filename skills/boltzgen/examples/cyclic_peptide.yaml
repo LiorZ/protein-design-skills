@@ -1,0 +1,28 @@
+# Head-to-tail cyclic peptide-binder design.
+# (Modeled on example/cylcic_against_kras_with_specific_site/cyclicdesign.yaml)
+#
+# Run:
+#   boltzgen check examples/cyclic_peptide.yaml
+#   boltzgen run   examples/cyclic_peptide.yaml \
+#     --output workbench/test --protocol peptide-anything --num_designs 100
+
+entities:
+  # Designed cyclic peptide, 8-16 residues.
+  # cyclic: true == covalent backbone N(res1) -> C(resN) closure.
+  - protein:
+      id: B
+      sequence: 8..16
+      cyclic: true
+
+  # Target with specific binding-site residues on chain A.
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: A
+        - chain:
+            id: C        # include an additional chain if you have one (e.g., effector)
+      binding_types:
+        - chain:
+            id: A
+            binding: 12,14,61,63,73,76,77,83,101,104,108

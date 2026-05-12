@@ -1,0 +1,25 @@
+# Inverse-fold an existing complex without running the diffusion step.
+# (Modeled on example/inverse_folding/1brs.yaml)
+#
+# Use `--only_inverse_fold` on the CLI. Requires a fully specified structure.
+#
+# Run:
+#   boltzgen check examples/inverse_folding_only.yaml
+#   boltzgen run   examples/inverse_folding_only.yaml \
+#     --output workbench/if --only_inverse_fold \
+#     --inverse_fold_num_sequences 10
+
+entities:
+  - file:
+      path: complex.cif         # <-- replace with your complex CIF
+      include:
+        - chain:
+            id: A           # target
+        - chain:
+            id: D           # binder to re-sequence
+
+      # Redesign only specific residues on chain D (the binder).
+      design:
+        - chain:
+            id: D
+            res_index: 33..46

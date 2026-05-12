@@ -1,0 +1,21 @@
+# Minimal protein-binder design — no binding site specified.
+#
+# Run:
+#   boltzgen check examples/vanilla_protein_binder.yaml
+#   boltzgen run   examples/vanilla_protein_binder.yaml \
+#     --output workbench/test \
+#     --protocol protein-anything \
+#     --num_designs 50            # use 10000-60000 for a real campaign
+
+entities:
+  # Designed protein chain: variable length 80-140 residues.
+  - protein:
+      id: B
+      sequence: 80..140
+
+  # Target from a CIF file. Path is relative to THIS yaml's directory.
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: A              # uses canonical mmCIF label_asym_id

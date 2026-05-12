@@ -1,0 +1,38 @@
+# Disulfide-stapled peptide with secondary-structure (beta-hairpin) conditioning.
+# (Modeled on example/disulfide_peptide_with_betahairpin_conditioning/cropped_target.yaml)
+#
+# Run:
+#   boltzgen check examples/disulfide_peptide.yaml
+#   boltzgen run   examples/disulfide_peptide.yaml \
+#     --output workbench/test --protocol peptide-anything --num_designs 100 \
+#     --inverse_fold_avoid ""    # allow Cys (peptide protocol blocks them by default)
+
+entities:
+  # Sequence: 1 designed res, Cys, 11..16 designed, Cys, 1 designed, Cys.
+  # Indices below count "as if the minimum was sampled" (1C11C1C → 15 residues),
+  # so positions 2, 14, and 16 are the cysteines.
+  - protein:
+      id: B
+      sequence: 1C11..16C1C
+      # Beta-sheet conditioning on the bulk of the designed region.
+      secondary_structure:
+        sheet: 1,3..11
+
+  # Target — bind residues 26..31, 381, 408 on chain A, residue 24+ included.
+  - file:
+      path: target.cif         # <-- replace with your CIF / PDB
+      include:
+        - chain:
+            id: A
+            res_index: 24..
+      binding_types:
+        - chain:
+            id: A
+            binding: 26..31,381,408
+
+constraints:
+  # Disulfide between the two designed cysteines.
+  # Indices count from the minimum-sampled sequence.
+  - bond:
+      atom1: [B, 2, SG]
+      atom2: [B, 14, SG]
