@@ -1,0 +1,25 @@
+version: 1
+# Cross-validate a designed binder (chain B) against its target (chain A).
+# - Use a real MSA for the target.
+# - Set msa: empty on the binder (de novo sequences have no useful homologs).
+#   boltz predict binder_validation.yaml --use_msa_server \
+#     --diffusion_samples 5 --seed 42
+sequences:
+  - protein:                                  # target
+      id: A
+      sequence: <REPLACE_WITH_TARGET_SEQUENCE>
+      # Use --use_msa_server, or point at a pre-computed MSA:
+      # msa: ./msa/target.a3m
+  - protein:                                  # designed binder
+      id: B
+      sequence: <REPLACE_WITH_BINDER_SEQUENCE>
+      msa: empty
+# Optional: bias toward the hotspot residues used during design.
+# Don't enable `force: true` here — you want Boltz's independent assessment.
+# constraints:
+#   - pocket:
+#       binder: B
+#       contacts:
+#         - [A, 138]
+#         - [A, 142]
+#       max_distance: 6

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "heme_with_cys_hotspot_len_200",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "------------------------------C-------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "ligand": {
+          "ligand": "FILE_studio-179/priority_1/heme_b_final_0.sdf",
+          "count": 1
+        }
+      }
+    ],
+    "covalent_bonds": [
+      {
+        "left_entity": 1,
+        "left_position": 31,
+        "left_atom": "SG",
+        "right_entity": 2,
+        "right_position": 1,
+        "right_atom": "FE"
+      }
+    ]
+  },
+  {
+    "name": "two_his_zn_coordination_len_150",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "---------------------------------------H-------------------------------------------------H------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "ion": {
+          "ion": "ZN",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

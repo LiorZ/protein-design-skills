@@ -1,0 +1,9 @@
+version: 1
+# Single-sequence (no MSA) mode. Reduces accuracy for natural proteins;
+# useful for de novo designed sequences with no natural homologs.
+#   boltz predict no_msa.yaml
+sequences:
+  - protein:
+      id: A
+      sequence: QLEDSEVEAVAKGLEEMYANGVTEDNFKNYVKNNFAQQEISSVEEELNVNISDSCVANKIKDEFFAMISISAIVKAAQKKAWKELAVTVLRFAKANGLKTNAIIVAGQLALWAVQCG
+      msa: empty

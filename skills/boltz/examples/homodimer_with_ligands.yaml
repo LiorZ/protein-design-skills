@@ -1,0 +1,16 @@
+version: 1
+# Homodimer (id: [A, B]) with a CCD ligand (two copies) and a SMILES ligand (two copies).
+# The same MSA is reused for both copies of the protein chain.
+#   boltz predict homodimer_with_ligands.yaml --use_msa_server
+sequences:
+  - protein:
+      id: [A, B]
+      sequence: MVTPEGNVSLVDESLLVGVTDEDRAVRSAHQFYERLIGLWAPAVMEAAHELGVFAALAEAPADSGELARRLDCDARAMRVLLDALYAYDVIDRIHDTNGFRYLLSAEARECLLPGTLFSLVGKFMHDINVAWPAWRNLAEVVRHGARDTSGAESPNGIAQEDYESLVGGINFWAPPIVTTLSRKLRASGRSGDATASVLDVGCGTGLYSQLLLREFPRWTATGLDVERIATLANAQALRLGVEERFATRAGDFWRGGWGTGYDLVLFANIFHLQTPASAVRLMRHAAACLAPDGLVAVVDQIVDADREPKTPQDRFALLFAASMTNTGGGDAYTFQEYEEWFTAAGLQRIETLDTPMHRILLARRATEPSAVPEGQASENLYFQ
+      # Provide an .a3m or set --use_msa_server to skip this line.
+      # msa: ./msa/seq1.a3m
+  - ligand:
+      id: [C, D]
+      ccd: SAH
+  - ligand:
+      id: [E, F]
+      smiles: 'N[C@@H](Cc1ccc(O)cc1)C(=O)O'

@@ -1,0 +1,15 @@
+version: 1
+# Boltz-2 affinity prediction: outputs affinity_pred_value (log10(IC50_uM); lower = stronger)
+# and affinity_probability_binary (probability of binding, 0–1).
+# Boltz-2 only. Run with:
+#   boltz predict affinity.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: MVTPEGNVSLVDESLLVGVTDEDRAVRSAHQFYERLIGLWAPAVMEAAHELGVFAALAEAPADSGELARRLDCDARAMRVLLDALYAYDVIDRIHDTNGFRYLLSAEARECLLPGTLFSLVGKFMHDINVAWPAWRNLAEVVRHGARDTSGAESPNGIAQEDYESLVGGINFWAPPIVTTLSRKLRASGRSGDATASVLDVGCGTGLYSQLLLREFPRWTATGLDVERIATLANAQALRLGVEERFATRAGDFWRGGWGTGYDLVLFANIFHLQTPASAVRLMRHAAACLAPDGLVAVVDQIVDADREPKTPQDRFALLFAASMTNTGGGDAYTFQEYEEWFTAAGLQRIETLDTPMHRILLARRATEPSAVPEGQASENLYFQ
+  - ligand:
+      id: B
+      smiles: 'N[C@@H](Cc1ccc(O)cc1)C(=O)O'
+properties:
+  - affinity:
+      binder: B          # must be a single ligand chain id, ≤128 heavy atoms (≤56 ideal)

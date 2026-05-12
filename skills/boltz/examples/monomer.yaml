@@ -1,0 +1,7 @@
+version: 1
+# Predict a single protein chain. Run with:
+#   boltz predict monomer.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: QLEDSEVEAVAKGLEEMYANGVTEDNFKNYVKNNFAQQEISSVEEELNVNISDSCVANKIKDEFFAMISISAIVKAAQKKAWKELAVTVLRFAKANGLKTNAIIVAGQLALWAVQCG

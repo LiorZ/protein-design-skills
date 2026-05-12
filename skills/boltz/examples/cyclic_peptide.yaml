@@ -1,0 +1,8 @@
+version: 1
+# Head-to-tail cyclic peptide. Boltz models the closing peptide bond.
+#   boltz predict cyclic_peptide.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: QLEDSEVEAVAKG
+      cyclic: true

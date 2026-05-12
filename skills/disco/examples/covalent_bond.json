@@ -1,0 +1,29 @@
+[
+  {
+    "name": "plp_lys_schiff_base_len_200",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "-------------------------------------------------------------------------------K------------------------------------------------------------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "ligand": {
+          "ligand": "CCD_PLP",
+          "count": 1
+        }
+      }
+    ],
+    "covalent_bonds": [
+      {
+        "left_entity": 1,
+        "left_position": 80,
+        "left_atom": "NZ",
+        "right_entity": 2,
+        "right_position": 1,
+        "right_atom": "C4A"
+      }
+    ]
+  }
+]

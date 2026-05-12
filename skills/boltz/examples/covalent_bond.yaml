@@ -1,0 +1,16 @@
+version: 1
+# Explicit covalent bond between a protein side chain and a CCD ligand.
+# Both endpoints must be CCD-known (SMILES ligands cannot participate
+# in a `bond:` constraint because their atoms have no stable CCD names).
+#   boltz predict covalent_bond.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: <REPLACE_WITH_SEQUENCE_CONTAINING_CYS_AT_169>
+  - ligand:
+      id: L
+      ccd: <REPLACE_WITH_COVALENT_WARHEAD_CCD>
+constraints:
+  - bond:
+      atom1: [A, 169, SG]      # Cys169 sulfur
+      atom2: [L, 1, C12]       # warhead atom name from the CCD entry

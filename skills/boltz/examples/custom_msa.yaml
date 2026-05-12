@@ -1,0 +1,9 @@
+version: 1
+# Use a local pre-computed A3M MSA instead of the ColabFold server.
+# Generate via colabfold_search, hhblits, jackhmmer, or a local ColabFold install.
+#   boltz predict custom_msa.yaml          # no --use_msa_server needed
+sequences:
+  - protein:
+      id: A
+      sequence: QLEDSEVEAVAKGLEEMYANGVTEDNFKNYVKNNFAQQEISSVEEELNVNISDSCVANKIKDEFFAMISISAIVKAAQKKAWKELAVTVLRFAKANGLKTNAIIVAGQLALWAVQCG
+      msa: ./msa/seq2.a3m

@@ -1,0 +1,53 @@
+[
+  {
+    "name": "rna_aptamer_len_60",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "rnaSequence": {
+          "sequence": "GGCUAGCCAUUUGACAUCGAUACGUA",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "rna_aptamer_len_70",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "----------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "rnaSequence": {
+          "sequence": "GGCUAGCCAUUUGACAUCGAUACGUA",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "rna_aptamer_len_80",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "--------------------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "rnaSequence": {
+          "sequence": "GGCUAGCCAUUUGACAUCGAUACGUA",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

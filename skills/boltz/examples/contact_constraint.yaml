@@ -1,0 +1,13 @@
+version: 1
+# Boltz-2 only: token-token contact bias (e.g. from chemical cross-linking).
+#   boltz predict contact_constraint.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: <REPLACE_WITH_SEQUENCE_LONGER_THAN_211_RESIDUES>
+constraints:
+  - contact:
+      token1: [A, 42]
+      token2: [A, 211]
+      max_distance: 11   # Å — DSS / BS3 cross-linker reach
+      force: true        # enforce via a potential during diffusion

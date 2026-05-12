@@ -1,0 +1,32 @@
+version: 1
+# Boltz-2 only: template-guided prediction.
+# Without `force`, the template biases the trunk; with `force: true` + `threshold`,
+# a backbone-RMSD potential constrains diffusion.
+#   boltz predict with_template.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: <REPLACE_WITH_QUERY_SEQUENCE>
+  - protein:
+      id: B
+      sequence: <REPLACE_WITH_SECOND_QUERY_SEQUENCE>
+
+templates:
+  # Match all protein chains in the YAML against all protein chains in the CIF
+  # by global alignment.
+  - cif: ./templates/2abc.cif
+
+  # Or restrict to a specific YAML chain (Boltz auto-picks the best template chain):
+  # - cif: ./templates/2abc.cif
+  #   chain_id: A
+
+  # Or supply an explicit query → template chain mapping:
+  # - cif: ./templates/heterodimer.cif
+  #   chain_id: [A, B]
+  #   template_id: [H, L]
+
+  # Hard constraint: enforce backbone within 2 Å of the template via a potential:
+  # - cif: ./templates/apo.cif
+  #   chain_id: A
+  #   force: true
+  #   threshold: 2.0

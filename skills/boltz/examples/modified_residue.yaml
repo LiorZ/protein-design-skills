@@ -1,0 +1,13 @@
+version: 1
+# Replace residues with CCD-coded modified versions (e.g. MSE = selenomethionine).
+# `position` is 1-indexed into `sequence`; `ccd` must be a known CCD code.
+#   boltz predict modified_residue.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: MVTPEGNVSLVDESLLVG
+      modifications:
+        - position: 1
+          ccd: MSE       # Met → SelenoMet
+        - position: 6
+          ccd: SEP       # Ser → phospho-Ser

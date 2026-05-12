@@ -1,0 +1,13 @@
+version: 1
+# Mixed protein / DNA / RNA complex. Nucleic acids do not use an MSA.
+#   boltz predict dna_rna_protein.yaml --use_msa_server
+sequences:
+  - protein:
+      id: A
+      sequence: <REPLACE_WITH_PROTEIN_SEQUENCE>
+  - dna:
+      id: D
+      sequence: ATCGATCGATCG
+  - rna:
+      id: R
+      sequence: GCAUAGCGCAUA

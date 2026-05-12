@@ -1,0 +1,48 @@
+[
+  {
+    "name": "dsdna_tf_len_60",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "dnaSequence": {
+          "sequence": "GATTACAGATCATGC",
+          "count": 1
+        }
+      },
+      {
+        "dnaSequence": {
+          "sequence": "GCATGATCTGTAATC",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "dsdna_tf_len_70",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "----------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "dnaSequence": {
+          "sequence": "GATTACAGATCATGC",
+          "count": 1
+        }
+      },
+      {
+        "dnaSequence": {
+          "sequence": "GCATGATCTGTAATC",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

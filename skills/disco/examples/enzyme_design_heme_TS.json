@@ -1,0 +1,53 @@
+[
+  {
+    "name": "carbene_TS1_len_150",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "------------------------------------------------------------------------------------------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "ligand": {
+          "ligand": "FILE_studio-179/priority_0/carbene_v1_ethyl_diazoacetate_3-TS1_heme_guess_nohist.sdf",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "carbene_TS1_len_200",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "ligand": {
+          "ligand": "FILE_studio-179/priority_0/carbene_v1_ethyl_diazoacetate_3-TS1_heme_guess_nohist.sdf",
+          "count": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "carbene_TS1_len_250",
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+          "count": 1
+        }
+      },
+      {
+        "ligand": {
+          "ligand": "FILE_studio-179/priority_0/carbene_v1_ethyl_diazoacetate_3-TS1_heme_guess_nohist.sdf",
+          "count": 1
+        }
+      }
+    ]
+  }
+]
