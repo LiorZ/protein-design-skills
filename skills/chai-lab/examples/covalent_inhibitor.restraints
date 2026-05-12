@@ -1,0 +1,2 @@
+restraint_id,chainA,res_idxA,chainB,res_idxB,connection_type,confidence,min_distance_angstrom,max_distance_angstrom,comment
+b1,A,C217@SG,B,@S1,covalent,1.0,0.0,0.0,Cys thioether covalent attachment
