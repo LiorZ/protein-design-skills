@@ -1,0 +1,29 @@
+experiment:
+  name: binder_design_example_beam
+
+paths:
+  rootdir: examples/binder_design/output_beam
+  dataset: data/design/binder_design/binderbench
+
+generation:
+  compile: true
+  dataset:
+    source: target
+    selections: 01_bhrf1
+    n_sample: 4
+  inference:
+    sampler:
+      sampler:
+        direction_scale: 0.0
+    search:
+      name: beam
+    reward:
+      name: colabfold
+
+evaluation:
+  version: binder
+  inverse_folding:
+    model_name: forward
+  folding:
+    model_name: colabfold
+    mode: template

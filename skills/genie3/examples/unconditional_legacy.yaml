@@ -1,0 +1,25 @@
+experiment:
+  name: unconditional_example_legacy
+
+paths:
+  rootdir: examples/unconditional/output_legacy
+
+generation:
+  base:
+    config: pretrained/legacy/config.yaml
+    checkpoint: pretrained/legacy/checkpoints/step=400000.ckpt
+  dataset:
+    source: unconditional
+    min_length: 50
+    max_length: 50
+    length_step: 50
+    n_sample: 5
+  sampler:
+    name: ddpm
+    sampler:
+      noise_scale: 0.6
+
+evaluation:
+  version: unconditional
+  folding:
+    model_name: esmfold

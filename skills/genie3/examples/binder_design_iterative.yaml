@@ -1,0 +1,45 @@
+experiment:
+  name: binder_design_iterative_example
+
+paths:
+  rootdir: examples/binder_design/output_iterative
+  dataset: data/design/binder_design/binderbench
+
+generation:
+  dataset:
+    source: target
+    selections: 01_bhrf1
+    n_sample: 8              # default n_sample for any round that omits it
+  sampler:
+    sampler:
+      direction_scale: 0.0
+  # cond_strategy is omitted here — each round specifies its own
+
+evaluation:
+  version: binder
+  inverse_folding:
+    num_seq: 1
+  folding:
+    model_name: colabfold
+    mode: template
+
+# Iterative rounds: each round overrides cond_strategy (and optionally n_sample).
+# Run with: genie3 run --num-devices 4 -c experiment_iterative.yaml
+# Re-running the same command resumes from the last incomplete stage.
+#
+# cond_strategy options:
+#   extended     — reads target_interface_residues["extended"] from problem JSON (predefined)
+#   common       — reads target_interface_residues["common"] from problem JSON (user-provided)
+#   iter_common  — computes common interface from all prior rounds' v0_success PDBs,
+#                  caches result as iter_common_round{N} in {rootdir}/problems/{problem}.json
+#
+rounds:
+  - id: round_0
+    cond_strategy: extended       # predefined: use extended interface from problem JSON
+
+  - id: round_1
+    cond_strategy: iter_common         # predefined: use user-provided common interface from problem JSON
+
+  - id: round_2
+    cond_strategy: iter_common    # iterative: compute from round_0 + round_1 successes
+                                  # writes iter_common_round0 to {rootdir}/problems/{problem}.json

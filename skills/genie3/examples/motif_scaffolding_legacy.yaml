@@ -1,0 +1,24 @@
+experiment:
+  name: motif_scaffolding_example
+
+paths:
+  rootdir: examples/motif_scaffolding/output_legacy
+  dataset: data/design/motif_scaffolding/motifbench
+
+generation:
+  base:
+    config: pretrained/legacy/config.yaml
+    checkpoint: pretrained/legacy/checkpoints/step=400000.ckpt
+  dataset:
+    source: motif
+    selections: 22_1BCF
+    n_sample: 5
+  sampler:
+    name: ddpm
+    sampler:
+      noise_scale: 0.4
+
+evaluation:
+  version: scaffold
+  folding:
+    model_name: esmfold
