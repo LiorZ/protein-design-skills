@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "protein-design-skills",
-      "source": ".",
+      "source": "./",
       "description": "Skills for de novo protein design and structure prediction: Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), and Genie 3.",
       "category": "protein-design",
       "tags": [
