@@ -15,6 +15,7 @@ A collection of [Claude Code](https://claude.com/claude-code) skills for de novo
 | **[genie3](skills/genie3/SKILL.md)** | Genie 3 — fast all-atom SE(3)-equivariant diffusion model for unconditional generation, motif scaffolding, and hotspot-guided binder design. | [aqlaboratory/genie3](https://github.com/aqlaboratory/genie3) |
 | **[invrotzyme](skills/invrotzyme/SKILL.md)** | Build inverse-rotamer theozyme / active-site assemblies from Rosetta enzdes CST files (PyRosetta) — drop-in input for RFdiffusion All-Atom enzyme design. | [ikalvet/invrotzyme](https://github.com/ikalvet/invrotzyme) |
 | **[placer](skills/placer/SKILL.md)** | PLACER — atom-level GNN for ligand pose refinement / docking-score, side-chain prediction, and conformational ensembles. Packaged to run from an Apptainer/Singularity SIF. | [baker-laboratory/PLACER](https://github.com/baker-laboratory/PLACER) |
+| **[protenix](skills/protenix/SKILL.md)** | Protenix — open-source AlphaFold 3 reproduction for protein / nucleic-acid / ligand / ion complex structure prediction, with MSAs, templates, covalent bonds, and pocket/contact constraints. Packaged to run from an Apptainer/Singularity SIF. | [bytedance/Protenix](https://github.com/bytedance/Protenix) |
 | **[protflow](skills/protflow/SKILL.md)** | ProtFlow — compose multi-step design pipelines (RFdiffusion, MPNN family, ESMFold, AF2/AF3, Boltz, Rosetta, GROMACS, …) behind a Poses + Runner API with first-class SLURM array jobs. | [mabr3112/ProtFlow](https://github.com/mabr3112/ProtFlow) |
 
 Each skill ships its `SKILL.md` plus curated `references/` and `examples/` so Claude has the source material on hand when it builds your pipeline.
@@ -61,7 +62,7 @@ A typical binder-design campaign chains several:
 
 1. **Generate backbones** with `genie3`, `boltzgen`, or `foundry` (RFdiffusion3). For enzymes, build a theozyme with `invrotzyme` first.
 2. **Assign sequences** with `foundry` (ProteinMPNN / LigandMPNN / SolubleMPNN) — or let `boltzgen` / `disco` co-design. Score / rerank candidates with `fair-esm`.
-3. **Validate** with `boltz`, `chai-lab`, or `fair-esm`'s ESMFold. For enzyme / ligand pockets, refine and score the ligand pose and side chains with `placer`.
+3. **Validate** with `boltz`, `chai-lab`, `protenix` (open-source AlphaFold 3), or `fair-esm`'s ESMFold — cross-checking two AF3-class co-folders is a strong signal. For enzyme / ligand pockets, refine and score the ligand pose and side chains with `placer`.
 4. **Rank** with ipSAE / pLDDT / iPTM filters described in each skill.
 
 For multi-step campaigns at cluster scale, drive the whole pipeline with `protflow` (SLURM array jobs, Poses DataFrame, motif tracking).
@@ -83,6 +84,7 @@ For multi-step campaigns at cluster scale, drive the whole pipeline with `protfl
 │   ├── genie3/
 │   ├── invrotzyme/
 │   ├── placer/
+│   ├── protenix/
 │   └── protflow/
 └── README.md
 ```
