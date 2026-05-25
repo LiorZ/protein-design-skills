@@ -1,7 +1,7 @@
 {
   "name": "protein-design-skills",
   "version": "0.1.0",
-  "description": "A collection of Claude Code skills for de novo protein design and structure prediction — Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), and Genie 3.",
+  "description": "A collection of Claude Code skills for de novo protein design and structure prediction — Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), Genie 3, and PLACER.",
   "author": {
     "name": "Lior Zimmerman",
     "url": "https://github.com/LiorZ"
@@ -18,6 +18,8 @@
     "rfdiffusion",
     "proteinmpnn",
     "genie",
-    "disco"
+    "disco",
+    "placer",
+    "ligand-docking"
   ]
 }

@@ -1,0 +1,104 @@
+Bootstrap: docker
+From: condaforge/miniforge3:24.9.2-0
+
+# =============================================================================
+# Apptainer / Singularity definition file for PLACER
+# (Protein-Ligand Atomistic Conformational Ensemble Resolver, Baker Lab)
+#
+# Build (rootless, preferred):
+#     apptainer build --fakeroot placer.sif PLACER.def
+#   or with sudo:
+#     sudo apptainer build placer.sif PLACER.def
+#   (singularity is a drop-in replacement for the apptainer command)
+#
+# Run (GPU — requires the host NVIDIA driver, exposed with --nv):
+#     apptainer exec --nv placer.sif \
+#         python /opt/PLACER/run_PLACER.py --help
+#
+# To pin a different commit or use the fully-pinned env, edit PLACER_REF /
+# ENV_FILE in the %post block below.
+#
+# The build needs network access (git clone + conda solve + the SE3Transformer
+# pip install from GitHub). It downloads ~several GB and can take 20-40 min.
+# =============================================================================
+
+%post
+    set -eux
+    export DEBIAN_FRONTEND=noninteractive
+
+    # ---- edit these to change source / pinning ------------------------------
+    PLACER_REPO=https://github.com/baker-laboratory/PLACER.git
+    PLACER_REF=main
+    # placer_env_lite.yml = loosely-pinned (faster/robuster solve).
+    # Use envs/placer_env.yml for the exact, fully-pinned environment.
+    ENV_FILE=envs/placer_env_lite.yml
+    # -------------------------------------------------------------------------
+
+    apt-get update
+    apt-get install -y --no-install-recommends git ca-certificates
+    rm -rf /var/lib/apt/lists/*
+
+    # --- PLACER source (ships the model weights in weights/PLACER_model_1.pt) -
+    git clone --depth 1 --branch "$PLACER_REF" "$PLACER_REPO" /opt/PLACER
+
+    # --- Build the documented runtime env into a fixed, named prefix ----------
+    mamba env create -p /opt/conda/envs/placer -f "/opt/PLACER/$ENV_FILE"
+
+    # --- Smoke-test the heavy deps so a broken build fails here, not at runtime
+    mamba run -p /opt/conda/envs/placer python - <<'PY'
+import torch, dgl, e3nn, networkx, numpy, pandas
+from openbabel import openbabel
+import se3_transformer
+print("torch", torch.__version__, "cuda build", torch.version.cuda)
+print("dgl", dgl.__version__, "| e3nn", e3nn.__version__)
+print("PLACER deps OK")
+PY
+
+    mamba clean -afy
+    conda clean -afy
+
+%environment
+    # Put the placer env first on PATH so `python` is the PLACER interpreter.
+    export PATH=/opt/conda/envs/placer/bin:$PATH
+    export PLACER_DIR=/opt/PLACER
+    # run_PLACER.py's default --weights is CWD-relative; expose the absolute
+    # path so callers can pass --weights "$PLACER_WEIGHTS".
+    export PLACER_WEIGHTS=/opt/PLACER/weights/PLACER_model_1.pt
+    export OPENBABEL_DATADIR=/opt/conda/envs/placer/share/openbabel
+
+%runscript
+    # `apptainer run placer.sif <args>` -> run_PLACER.py <args>
+    exec python /opt/PLACER/run_PLACER.py "$@"
+
+%test
+    set -e
+    python /opt/PLACER/run_PLACER.py --help > /dev/null
+    echo "run_PLACER.py --help OK"
+
+%labels
+    Tool        PLACER
+    Upstream    https://github.com/baker-laboratory/PLACER
+    License     BSD-3-Clause
+    Description Protein-Ligand Atomistic Conformational Ensemble Resolver
+
+%help
+    PLACER inside Apptainer/Singularity.
+
+    BUILD
+        apptainer build --fakeroot placer.sif PLACER.def
+
+    RUN (GPU strongly recommended)
+        apptainer exec --nv \
+            placer.sif \
+            python /opt/PLACER/run_PLACER.py \
+                --ifile input.cif --odir out -n 50 --rerank prmsd \
+                --predict_ligand D-LDP-501 --suffix LDP \
+                --weights /opt/PLACER/weights/PLACER_model_1.pt
+
+    NOTES
+      * --nv exposes the host GPU. Without it PLACER runs on CPU (minutes/model).
+      * Apptainer auto-mounts $PWD and $HOME; use --bind SRC:DST for other paths.
+      * The default --weights path is resolved relative to the working directory,
+        so always pass --weights "$PLACER_WEIGHTS" (= the path above) or add
+        --pwd /opt/PLACER to the apptainer command.
+      * Weights ship inside the image (baked in from the git clone).
