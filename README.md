@@ -6,6 +6,7 @@ A collection of [Claude Code](https://claude.com/claude-code) skills for de novo
 
 | Skill | What it does | Upstream |
 |-------|-------------|----------|
+| **[biotite](skills/biotite/SKILL.md)** | Biotite — fast, NumPy-backed toolkit to read / manipulate / write structures + sequences, compute RMSD / lDDT / TM-score / SASA / SSE, and fetch from RCSB / AlphaFold DB / UniProt / Entrez / PubChem. The "glue" library for preparing inputs and scoring outputs of the other tools. | [biotite-dev/biotite](https://github.com/biotite-dev/biotite) |
 | **[boltz](skills/boltz/SKILL.md)** | Boltz-1 / Boltz-2 — open foundation models for protein, complex, nucleic-acid, and protein-ligand structure + binding-affinity prediction. | [jwohlwend/boltz](https://github.com/jwohlwend/boltz) |
 | **[boltzgen](skills/boltzgen/SKILL.md)** | All-atom diffusion model for universal binder design (proteins, peptides, cyclic peptides, nanobodies, Fabs) against protein / small-molecule / nucleic-acid targets. | [HannesStark/boltzgen](https://github.com/HannesStark/boltzgen) |
 | **[chai-lab](skills/chai-lab/SKILL.md)** | Chai-1 — multi-modal foundation model for protein / ligand / nucleic-acid complex structure prediction, with restraints and MSAs. | [chaidiscovery/chai-lab](https://github.com/chaidiscovery/chai-lab) |
@@ -63,7 +64,7 @@ A typical binder-design campaign chains several:
 1. **Generate backbones** with `genie3`, `boltzgen`, or `foundry` (RFdiffusion3). For enzymes, build a theozyme with `invrotzyme` first.
 2. **Assign sequences** with `foundry` (ProteinMPNN / LigandMPNN / SolubleMPNN) — or let `boltzgen` / `disco` co-design. Score / rerank candidates with `fair-esm`.
 3. **Validate** with `boltz`, `chai-lab`, `protenix` (open-source AlphaFold 3), or `fair-esm`'s ESMFold — cross-checking two AF3-class co-folders is a strong signal. For enzyme / ligand pockets, refine and score the ligand pose and side chains with `placer`.
-4. **Rank** with ipSAE / pLDDT / iPTM filters described in each skill.
+4. **Rank** with ipSAE / pLDDT / iPTM filters described in each skill — and use `biotite` to parse the CIF/PDB outputs and compute the structural metrics (RMSD / lDDT / TM-score / SASA / clashes) you filter on, or to fetch and clean target structures feeding the design steps above.
 
 For multi-step campaigns at cluster scale, drive the whole pipeline with `protflow` (SLURM array jobs, Poses DataFrame, motif tracking).
 
@@ -75,6 +76,7 @@ For multi-step campaigns at cluster scale, drive the whole pipeline with `protfl
 │   ├── plugin.json          # plugin manifest
 │   └── marketplace.json     # marketplace entry
 ├── skills/
+│   ├── biotite/
 │   ├── boltz/
 │   ├── boltzgen/
 │   ├── chai-lab/
