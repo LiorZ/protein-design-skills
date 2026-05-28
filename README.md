@@ -11,6 +11,7 @@ A collection of [Claude Code](https://claude.com/claude-code) skills for de novo
 | **[boltzgen](skills/boltzgen/SKILL.md)** | All-atom diffusion model for universal binder design (proteins, peptides, cyclic peptides, nanobodies, Fabs) against protein / small-molecule / nucleic-acid targets. | [HannesStark/boltzgen](https://github.com/HannesStark/boltzgen) |
 | **[chai-lab](skills/chai-lab/SKILL.md)** | Chai-1 — multi-modal foundation model for protein / ligand / nucleic-acid complex structure prediction, with restraints and MSAs. | [chaidiscovery/chai-lab](https://github.com/chaidiscovery/chai-lab) |
 | **[disco](skills/disco/SKILL.md)** | DISCO — diffusion model that **co-designs** protein sequence and 3D structure conditioned on small molecules, metals, DNA, or RNA. | [DISCO-design/DISCO](https://github.com/DISCO-design/DISCO) |
+| **[esm-biohub](skills/esm-biohub/SKILL.md)** | Biohub's `esm` repo — **ESMC** language model, **ESMFold2** AF3-class structure prediction, **ESM3** generative model, and **ESMC SAEs** for interpretability. Packaged to run from an Apptainer/Singularity SIF. | [Biohub/esm](https://github.com/Biohub/esm) |
 | **[fair-esm](skills/fair-esm/SKILL.md)** | Meta FAIR `fair-esm` — ESM-2 / ESM-1b / ESM-1v / MSA Transformer embeddings, ESMFold structure prediction, ESM-IF1 inverse folding, zero-shot variant scoring, and the ESM Metagenomic Atlas. | [facebookresearch/esm](https://github.com/facebookresearch/esm) |
 | **[foundry](skills/foundry/SKILL.md)** | Foundry toolkit — RFdiffusion3, RosettaFold3, and the ProteinMPNN / LigandMPNN / SolubleMPNN / EnhancedMPNN / ThermalMPNN family under a shared CLI. Includes extension paths (registering checkpoints, adding architectures). | RC Foundry |
 | **[genie3](skills/genie3/SKILL.md)** | Genie 3 — fast all-atom SE(3)-equivariant diffusion model for unconditional generation, motif scaffolding, and hotspot-guided binder design. | [aqlaboratory/genie3](https://github.com/aqlaboratory/genie3) |
@@ -81,6 +82,7 @@ For multi-step campaigns at cluster scale, drive the whole pipeline with `protfl
 │   ├── boltzgen/
 │   ├── chai-lab/
 │   ├── disco/
+│   ├── esm-biohub/
 │   ├── fair-esm/
 │   ├── foundry/
 │   ├── genie3/

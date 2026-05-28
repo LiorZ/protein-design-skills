@@ -1,0 +1,118 @@
+# ===================================================================
+# ESM (EvolutionaryScale) — Apptainer / Singularity definition.
+#
+# Bootstraps the same nvidia/cuda Ubuntu 24.04 base as the plain
+# Dockerfile, installs Python 3.12, PyTorch (CUDA 12.4 wheels) and the
+# `esm` package + deps from this repo.
+#
+# Build:
+#   apptainer build esm.sif esm.def
+#   # ...or with fakeroot if you don't have root:
+#   apptainer build --fakeroot esm.sif esm.def
+#
+# Run (GPU):
+#   apptainer run --nv esm.sif
+#   apptainer exec --nv esm.sif python -c "import esm; print(esm.__version__)"
+#
+# Run (interactive shell):
+#   apptainer shell --nv esm.sif
+# ===================================================================
+Bootstrap: docker
+From: nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
+
+%files
+    pyproject.toml /opt/esm/pyproject.toml
+    README.md      /opt/esm/README.md
+    LICENSE.md     /opt/esm/LICENSE.md
+    esm            /opt/esm/esm
+    cookbook       /opt/esm/cookbook
+    tests          /opt/esm/tests
+    tools          /opt/esm/tools
+    _assets        /opt/esm/_assets
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PATH=/opt/venv/bin:$PATH
+    export VIRTUAL_ENV=/opt/venv
+    export PYTHONDONTWRITEBYTECODE=1
+    export PYTHONUNBUFFERED=1
+    # Allow callers to override these for caching; default to per-user
+    # locations so the read-only SIF doesn't try to write into /root.
+    export HF_HOME=${HF_HOME:-$HOME/.cache/huggingface}
+    export TORCH_HOME=${TORCH_HOME:-$HOME/.cache/torch}
+
+%post
+    set -eux
+
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        python3.12 \
+        python3.12-dev \
+        python3.12-venv \
+        python3-pip \
+        git \
+        build-essential \
+        pkg-config \
+        cmake \
+        ca-certificates \
+        curl \
+        libxrender1 \
+        libxext6 \
+        libsm6 \
+        libgl1 \
+        libglib2.0-0
+    rm -rf /var/lib/apt/lists/*
+
+    update-alternatives --install /usr/bin/python  python  /usr/bin/python3.12 1
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+
+    # Isolated venv (PEP 668 blocks system-pip on 24.04).
+    python3.12 -m venv /opt/venv
+    export PATH=/opt/venv/bin:$PATH
+    export VIRTUAL_ENV=/opt/venv
+
+    pip install --no-cache-dir --upgrade pip setuptools wheel
+
+    # PyTorch + CUDA 12.6 wheels — pin the CUDA build to the image's
+    # runtime instead of letting the transitive resolver pick.
+    pip install --no-cache-dir \
+        --index-url https://download.pytorch.org/whl/cu126 \
+        torch torchvision torchaudio
+
+    # Install esm package + the EvolutionaryScale transformers fork
+    # pulled in by pyproject.toml dependencies.
+    cd /opt/esm
+    pip install --no-cache-dir .
+
+    # Sanity check.
+    python -c "import esm; print('esm', esm.__version__)"
+
+    # Make /workspace usable as a bind-mount target.
+    mkdir -p /workspace
+
+%runscript
+    exec python "$@"
+
+%test
+    /opt/venv/bin/python -c "import esm, torch; print('esm', esm.__version__, '/ torch', torch.__version__)"
+
+%labels
+    Author EvolutionaryScale + container packaging
+    Application esm
+    Version 3.3.0
+    BasedOn nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
+
+%help
+    Apptainer image for the EvolutionaryScale ESM repository
+    (https://github.com/Biohub/esm).
+
+    Common usage:
+      apptainer run  --nv esm.sif script.py
+      apptainer exec --nv esm.sif python -m esm ...
+      apptainer shell --nv esm.sif
+
+    The `--nv` flag exposes the host's NVIDIA driver/libs to the
+    container; required for GPU inference. The package itself runs on
+    CPU too but only the smallest models are practical there.
