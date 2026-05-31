@@ -1,0 +1,102 @@
+# ===================================================================
+# CAVER 3.0 — Apptainer / Singularity definition.
+#
+# Wraps the CAVER 3.0/3.01 Java tunnel-analysis tool in a portable
+# container. The CAVER tree at caver_3.0/caver lives at /opt/caver
+# inside the image; the example structures + configs live at
+# /opt/caver/examples.
+#
+# Build:
+#   apptainer build --fakeroot CAVER.sif CAVER.def
+#   # …or with sudo:
+#   sudo apptainer build CAVER.sif CAVER.def
+#
+# Run (the default %runscript invokes caver.jar; pass the same flags
+# you'd pass to `java -jar caver.jar`):
+#
+#   apptainer run CAVER.sif \
+#       -home  /opt/caver \
+#       -pdb   ./md_snapshots \
+#       -conf  ./config.txt \
+#       -out   ./out
+#
+# Or override -Xmx and other JVM flags via $JAVA_OPTS:
+#
+#   apptainer run --env JAVA_OPTS="-Xmx12g" CAVER.sif ...
+#
+# CAVER is CPU-only — no `--nv`, no GPU. Java + a writable cwd for
+# output is all it needs.
+# ===================================================================
+Bootstrap: docker
+From: eclipse-temurin:21-jre-noble
+
+%files
+    caver_3.0/caver           /opt/caver
+    caver_3.0/examples        /opt/caver/examples
+    caver_3.0/readme.txt      /opt/caver/readme.txt
+    caver_3.0/user_guide      /opt/caver/user_guide
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export CAVER_HOME=/opt/caver
+    # Default heap.  Override at run-time:  --env JAVA_OPTS="-Xmx12g"
+    export JAVA_OPTS="${JAVA_OPTS:--Xmx4g}"
+
+%post
+    set -eux
+
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        bash \
+        coreutils \
+        findutils \
+        python3 \
+        python3-pip
+    rm -rf /var/lib/apt/lists/*
+
+    # Sanity check.
+    java -version
+    test -f /opt/caver/caver.jar
+    test -d /opt/caver/lib
+    test -d /opt/caver/bin
+
+    # Make /workspace usable as a bind-mount target.
+    mkdir -p /workspace
+
+%runscript
+    # Forward all positional args to the caver.jar entrypoint.
+    # User passes -home/-pdb/-conf/-out etc.
+    exec java ${JAVA_OPTS} -cp /opt/caver/lib -jar /opt/caver/caver.jar "$@"
+
+%test
+    java -version
+    java -cp /opt/caver/lib -jar /opt/caver/caver.jar -help || true
+
+%labels
+    Application caver
+    Version 3.01
+    BasedOn eclipse-temurin:21-jre-noble
+    Upstream http://www.caver.cz/
+    Citation "Chovancova et al. 2012, PLoS Comput Biol 8: e1002708"
+    License GPL-3.0
+
+%help
+    Apptainer image for CAVER 3.0/3.01 — analysis of transport
+    pathways (tunnels) in static and dynamic protein structures.
+
+    Usage:
+      apptainer run CAVER.sif -home /opt/caver -pdb ./md -conf ./config.txt -out ./out
+      apptainer exec CAVER.sif java -Xmx8g -cp /opt/caver/lib -jar /opt/caver/caver.jar ...
+      apptainer shell CAVER.sif
+
+    Inside, /opt/caver is the CAVER home (atom_radii.csv, lib/, bin/,
+    caver.jar). Examples ship at /opt/caver/examples (QUICK_START,
+    static_structures, guided_example).
+
+    Override the JVM heap:
+      apptainer run --env JAVA_OPTS="-Xmx16g" CAVER.sif ...
+
+    CAVER is CPU-only — no --nv needed.

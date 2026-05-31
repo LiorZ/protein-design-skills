@@ -9,6 +9,7 @@ A collection of [Claude Code](https://claude.com/claude-code) skills for de novo
 | **[biotite](skills/biotite/SKILL.md)** | Biotite — fast, NumPy-backed toolkit to read / manipulate / write structures + sequences, compute RMSD / lDDT / TM-score / SASA / SSE, and fetch from RCSB / AlphaFold DB / UniProt / Entrez / PubChem. The "glue" library for preparing inputs and scoring outputs of the other tools. | [biotite-dev/biotite](https://github.com/biotite-dev/biotite) |
 | **[boltz](skills/boltz/SKILL.md)** | Boltz-1 / Boltz-2 — open foundation models for protein, complex, nucleic-acid, and protein-ligand structure + binding-affinity prediction. | [jwohlwend/boltz](https://github.com/jwohlwend/boltz) |
 | **[boltzgen](skills/boltzgen/SKILL.md)** | All-atom diffusion model for universal binder design (proteins, peptides, cyclic peptides, nanobodies, Fabs) against protein / small-molecule / nucleic-acid targets. | [HannesStark/boltzgen](https://github.com/HannesStark/boltzgen) |
+| **[caver](skills/caver/SKILL.md)** | CAVER 3.0/3.01 — Voronoi-based identification, geometric characterization, clustering, and visualization of transport tunnels in proteins (single PDB or MD ensembles). Packaged to run from an Apptainer/Singularity SIF. | [caver.cz](http://www.caver.cz/) |
 | **[chai-lab](skills/chai-lab/SKILL.md)** | Chai-1 — multi-modal foundation model for protein / ligand / nucleic-acid complex structure prediction, with restraints and MSAs. | [chaidiscovery/chai-lab](https://github.com/chaidiscovery/chai-lab) |
 | **[disco](skills/disco/SKILL.md)** | DISCO — diffusion model that **co-designs** protein sequence and 3D structure conditioned on small molecules, metals, DNA, or RNA. | [DISCO-design/DISCO](https://github.com/DISCO-design/DISCO) |
 | **[esm-biohub](skills/esm-biohub/SKILL.md)** | Biohub's `esm` repo — **ESMC** language model, **ESMFold2** AF3-class structure prediction, **ESM3** generative model, and **ESMC SAEs** for interpretability. Packaged to run from an Apptainer/Singularity SIF. | [Biohub/esm](https://github.com/Biohub/esm) |
@@ -80,6 +81,7 @@ For multi-step campaigns at cluster scale, drive the whole pipeline with `protfl
 │   ├── biotite/
 │   ├── boltz/
 │   ├── boltzgen/
+│   ├── caver/
 │   ├── chai-lab/
 │   ├── disco/
 │   ├── esm-biohub/

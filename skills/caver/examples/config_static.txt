@@ -1,0 +1,49 @@
+# Minimal CAVER config for a single static structure.
+# Save as ./config.txt next to ./pdb/<structure>.pdb.
+
+#*****************************
+# TUNNEL CALCULATION
+#*****************************
+# Pick ONE of these three starting-point modes:
+starting_point_residue 150
+# starting_point_atom 1234
+# starting_point_atom 1245
+# starting_point_atom 1255
+# starting_point_coordinates 17.012 24.139 7.790
+
+probe_radius 0.9           # water-sized; 0.6 for very narrow channels
+shell_radius 3
+shell_depth  4
+
+#*****************************
+# TUNNEL CLUSTERING
+#*****************************
+clustering              average_link
+weighting_coefficient   1
+clustering_threshold    3.5
+
+exclude_start_zone 2
+exclude_end_zone   0
+min_middle_zone    5
+save_zones         yes
+
+#*****************************
+# GENERATION OF OUTPUTS
+#*****************************
+one_tunnel_in_snapshot cheapest
+
+generate_summary                 yes
+generate_tunnel_characteristics  yes
+generate_tunnel_profiles         yes
+
+compute_tunnel_residues   yes
+residue_contact_distance  3.0
+
+compute_bottleneck_residues  yes
+bottleneck_contact_distance  3.0
+
+#*****************************
+# REPRODUCIBILITY
+#*****************************
+seed 1
+swap yes

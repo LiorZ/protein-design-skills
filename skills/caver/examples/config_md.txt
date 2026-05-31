@@ -1,0 +1,86 @@
+# CAVER config for a molecular-dynamics ensemble.
+# Save as ./config.txt next to ./md_snapshots/*.pdb.
+
+#*****************************
+# CALCULATION SETUP
+#*****************************
+load_tunnels       no
+load_cluster_tree  no
+stop_after         never
+
+#*****************************
+# INPUT DATA
+#*****************************
+time_sparsity 1
+first_frame   1
+last_frame    100
+
+#*****************************
+# TUNNEL CALCULATION
+#*****************************
+starting_point_atom 578
+starting_point_atom 1609
+starting_point_atom 3258
+
+probe_radius 0.9
+shell_radius 3
+shell_depth  4
+
+#*****************************
+# TUNNEL CLUSTERING
+#*****************************
+clustering              average_link
+weighting_coefficient   1
+clustering_threshold    3.5
+
+exclude_start_zone 2
+exclude_end_zone   0
+min_middle_zone    5
+save_zones         yes
+
+#*****************************
+# GENERATION OF OUTPUTS
+#*****************************
+one_tunnel_in_snapshot       cheapest
+save_dynamics_visualization  yes      # set 'no' for big runs (heavy on disk)
+
+generate_summary                 yes
+generate_tunnel_characteristics  yes
+generate_tunnel_profiles         yes
+
+generate_histograms             yes
+bottleneck_histogram   0.0 2.0 20
+throughput_histogram   0   1.0 10
+
+generate_bottleneck_heat_map         yes
+bottleneck_heat_map_range            1.0 2.0
+bottleneck_heat_map_element_size     10 20
+
+generate_profile_heat_map            yes
+profile_heat_map_resolution          0.5
+profile_heat_map_range               1.0 2.0
+profile_heat_map_element_size        20 10
+
+compute_tunnel_residues     yes
+residue_contact_distance    3.0
+compute_bottleneck_residues yes
+bottleneck_contact_distance 3.0
+
+#*****************************
+# REDUNDANCY REMOVAL (PER FRAME)
+#*****************************
+frame_clustering             yes
+frame_weighting_coefficient  1
+frame_clustering_threshold   1
+frame_min_middle_zone        5
+
+#*****************************
+# REPRODUCIBILITY / SCALE
+#*****************************
+seed 1
+swap no       # 'no' = keep in RAM (faster, needs -Xmx); 'yes' for huge runs
+
+# For very big MD sets (1000+ snapshots), uncomment:
+# do_approximate_clustering            yes
+# cluster_by_hierarchical_clustering   20000
+# max_training_clusters                15
