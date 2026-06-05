@@ -7,6 +7,7 @@ A collection of [Claude Code](https://claude.com/claude-code) skills for de novo
 | Skill | What it does | Upstream |
 |-------|-------------|----------|
 | **[bindcraft](skills/bindcraft/SKILL.md)** | BindCraft — hallucination-based de novo binder design (AF2 backprop + ProteinMPNN + PyRosetta) with built-in 5-model AF2 reprediction, interface scoring, and a tunable filter pass. The hallucination camp's reference pipeline. | [martinpacesa/BindCraft](https://github.com/martinpacesa/BindCraft) |
+| **[bioemu](skills/bioemu/SKILL.md)** | BioEmu — Microsoft Research's deep generative emulator of protein **equilibrium ensembles**: samples the Boltzmann distribution of backbone structures for a monomer at MD-replacing speed, with optional SMC / FKC steering, side-chain rebuild (HPacker), and OpenMM relax. | [microsoft/bioemu](https://github.com/microsoft/bioemu) |
 | **[biotite](skills/biotite/SKILL.md)** | Biotite — fast, NumPy-backed toolkit to read / manipulate / write structures + sequences, compute RMSD / lDDT / TM-score / SASA / SSE, and fetch from RCSB / AlphaFold DB / UniProt / Entrez / PubChem. The "glue" library for preparing inputs and scoring outputs of the other tools. | [biotite-dev/biotite](https://github.com/biotite-dev/biotite) |
 | **[boltz](skills/boltz/SKILL.md)** | Boltz-1 / Boltz-2 — open foundation models for protein, complex, nucleic-acid, and protein-ligand structure + binding-affinity prediction. | [jwohlwend/boltz](https://github.com/jwohlwend/boltz) |
 | **[boltzgen](skills/boltzgen/SKILL.md)** | All-atom diffusion model for universal binder design (proteins, peptides, cyclic peptides, nanobodies, Fabs) against protein / small-molecule / nucleic-acid targets. | [HannesStark/boltzgen](https://github.com/HannesStark/boltzgen) |
@@ -66,7 +67,7 @@ A typical binder-design campaign chains several:
 
 1. **Generate backbones** with `genie3`, `boltzgen`, `bindcraft` (hallucination), or `foundry` (RFdiffusion3). For enzymes, build a theozyme with `invrotzyme` first.
 2. **Assign sequences** with `foundry` (ProteinMPNN / LigandMPNN / SolubleMPNN) — or let `boltzgen` / `bindcraft` / `disco` co-design (`bindcraft` runs ProteinMPNN internally). Score / rerank candidates with `fair-esm`.
-3. **Validate** with `boltz`, `chai-lab`, `protenix` (open-source AlphaFold 3), or `fair-esm`'s ESMFold — cross-checking two AF3-class co-folders is a strong signal. `bindcraft` already runs 5-model AF2 reprediction internally, but an independent AF3-class predictor is still worth running on the top picks. For enzyme / ligand pockets, refine and score the ligand pose and side chains with `placer`.
+3. **Validate** with `boltz`, `chai-lab`, `protenix` (open-source AlphaFold 3), or `fair-esm`'s ESMFold — cross-checking two AF3-class co-folders is a strong signal. `bindcraft` already runs 5-model AF2 reprediction internally, but an independent AF3-class predictor is still worth running on the top picks. For enzyme / ligand pockets, refine and score the ligand pose and side chains with `placer`. For **equilibrium / conformational** validation of a designed monomer (does it actually stay folded? are there alternative basins?), sample the ensemble with `bioemu`.
 4. **Rank** with ipSAE / pLDDT / iPTM filters described in each skill — and use `biotite` to parse the CIF/PDB outputs and compute the structural metrics (RMSD / lDDT / TM-score / SASA / clashes) you filter on, or to fetch and clean target structures feeding the design steps above.
 
 For multi-step campaigns at cluster scale, drive the whole pipeline with `protflow` (SLURM array jobs, Poses DataFrame, motif tracking).
@@ -80,6 +81,7 @@ For multi-step campaigns at cluster scale, drive the whole pipeline with `protfl
 │   └── marketplace.json     # marketplace entry
 ├── skills/
 │   ├── bindcraft/
+│   ├── bioemu/
 │   ├── biotite/
 │   ├── boltz/
 │   ├── boltzgen/
