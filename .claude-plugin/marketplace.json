@@ -8,7 +8,7 @@
     {
       "name": "protein-design-skills",
       "source": "./",
-      "description": "Skills for de novo protein design and structure prediction: Biotite, Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), Genie 3, PLACER, and Protenix.",
+      "description": "Skills for de novo protein design and structure prediction: BindCraft, Biotite, Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), Genie 3, PLACER, and Protenix.",
       "category": "protein-design",
       "tags": [
         "protein-design",

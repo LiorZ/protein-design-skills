@@ -1,7 +1,7 @@
 {
   "name": "protein-design-skills",
   "version": "0.1.0",
-  "description": "A collection of Claude Code skills for de novo protein design and structure prediction — Biotite, Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), Genie 3, PLACER, and Protenix.",
+  "description": "A collection of Claude Code skills for de novo protein design and structure prediction — BindCraft, Biotite, Boltz, BoltzGen, Chai-1, DISCO, Foundry (RFdiffusion3 / RosettaFold3 / MPNN), Genie 3, PLACER, and Protenix.",
   "author": {
     "name": "Lior Zimmerman",
     "url": "https://github.com/LiorZ"
@@ -24,6 +24,9 @@
     "protenix",
     "alphafold3",
     "biotite",
-    "structural-bioinformatics"
+    "structural-bioinformatics",
+    "bindcraft",
+    "hallucination",
+    "af2-backprop"
   ]
 }
